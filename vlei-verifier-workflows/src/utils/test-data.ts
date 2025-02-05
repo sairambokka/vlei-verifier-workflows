@@ -1,11 +1,25 @@
-import path = require("path");
-import fs = require("fs");
 import { SignifyClient } from "signify-ts";
+import path = require("path");
+
+const fs = require("fs");
+const yaml = require("js-yaml");
+
+
+// Function to load and parse YAML file
+export function loadWorkflow(workflowFilePath: string) {
+  try {
+    const file = fs.readFileSync(workflowFilePath, "utf8");
+    return yaml.load(file);
+  } catch (e) {
+    console.error("Error reading YAML file:", e);
+    return null;
+  }
+}
+
 
 export async function getConfig(configFilePath: string) {
-  let dirPath = "../../src/config/";
   const configJson = JSON.parse(
-    fs.readFileSync(path.join(__dirname, dirPath) + configFilePath, "utf-8"),
+    fs.readFileSync(configFilePath, "utf-8"),
   );
   return configJson;
 }

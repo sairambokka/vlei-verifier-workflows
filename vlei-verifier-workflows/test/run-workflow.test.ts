@@ -6,9 +6,8 @@ import {
 } from "../src/utils/test-data";
 import { WorkflowRunner } from "../src/utils/run-workflow";
 import { strict as assert } from "assert";
+import { loadWorkflow } from "../src/utils/test-data"
 
-const fs = require("fs");
-const yaml = require("js-yaml");
 
 let env: TestEnvironment;
 
@@ -20,16 +19,6 @@ beforeAll((done) => {
   env = resolveEnvironment();
 });
 
-// Function to load and parse YAML file
-function loadWorkflow(filePath: string) {
-  try {
-    const file = fs.readFileSync(filePath, "utf8");
-    return yaml.load(file);
-  } catch (e) {
-    console.error("Error reading YAML file:", e);
-    return null;
-  }
-}
 
 test.only("workflow", async function run() {
   const workflowsDir = "../src/workflows/";
@@ -37,7 +26,9 @@ test.only("workflow", async function run() {
   const workflow = loadWorkflow(
     path.join(__dirname, `${workflowsDir}${workflowFile}`),
   );
-  const configFilePath = env.configuration;
+  const configFileName = env.configuration;
+  let dirPath = "../src/config/"
+  const configFilePath = path.join(__dirname, dirPath) + configFileName
   const configJson = await getConfig(configFilePath);
   if (workflow && configJson) {
     const wr = new WorkflowRunner(workflow, configJson);    

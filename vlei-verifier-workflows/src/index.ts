@@ -11,7 +11,8 @@ export { WorkflowRunner } from './utils/run-workflow'
 export {
     getConfig,
     getGrantedCredential,
-    ApiUser
+    ApiUser,
+    loadWorkflow
 } from './utils/test-data'
 
 export {
