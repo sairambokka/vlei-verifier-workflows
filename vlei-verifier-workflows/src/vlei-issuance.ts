@@ -316,10 +316,14 @@ export class VleiIssuance {
     const client = this.clients.get(aidInfo.agent.name)![0];
 
     if (delegator != null) {
-      const aid = await client.identifiers().get(aidInfo.name);
-      if(aid){
+      try{
+        const aid = await client.identifiers().get(aidInfo.name);
         return aid;
       }
+      catch{
+        console.log(`Creating delegated AID for: ${aidInfo.name}`)
+      }
+            
       kargsSinglesigAID.delpre = this.aids.get(delegator)![0].prefix;
       const delegatorClient = this.clients.get(
         this.aidsInfo.get(delegator).agent.name,
