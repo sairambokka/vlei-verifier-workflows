@@ -115,6 +115,7 @@ services:
       - KERI_AGENT_CORS=1
       - PYTHONUNBUFFERED=1
       - PYTHONIOENCODING=UTF-8
+      - KERI_URL=http://keria:3902
     configs:
       - source: keria.json
         target: /usr/local/var/keri/cf/keria.json
@@ -125,6 +126,11 @@ services:
       timeout: 3s
       retries: 5
       start_period: 2s
+    
+    ports:
+      - 3901:3901
+      - 3902:3902
+      - 3903:3903
 
   witness-demo:
     image: weboftrust/keri-witness-demo:1.1.0
@@ -168,3 +174,14 @@ services:
       timeout: 3s
       retries: 5
       start_period: 2s
+
+  deps:
+    image: alpine
+    command: ["echo", "Dependencies running"]
+    depends_on:
+      vlei-server:
+        condition: service_healthy
+      keria:
+        condition: service_healthy
+      witness-demo:
+        condition: service_healthy
