@@ -1,6 +1,6 @@
 import { VleiIssuance } from "../vlei-issuance";
 
-import { IssueCredentialStepRunner, RevokeCredentialStepRunner, StepRunner } from "./workflow-step-runners";
+import { IssueCredentialStepRunner, NotifyCredentialIssueeStepRunner, RevokeCredentialStepRunner, StepRunner, CredentialVerificationStepRunner } from "./workflow-step-runners";
 
 const fs = require("fs");
 const yaml = require("js-yaml");
@@ -23,6 +23,8 @@ export class WorkflowRunner{
   private registerPredefinedRunners(){
     this.registerRunner("issue_credential", new IssueCredentialStepRunner());
     this.registerRunner("revoke_credential", new RevokeCredentialStepRunner());
+    this.registerRunner("notify_credential_issuee", new NotifyCredentialIssueeStepRunner());
+    this.registerRunner("credential_verification", new CredentialVerificationStepRunner());
   }
 
   public async prepareClients() {
@@ -42,7 +44,7 @@ export class WorkflowRunner{
         console.log(`No step runner was registered for step '${step.type}'`);
         return false;
       }
-      await runner?.run(this.vi, stepName, step, this.configJson);
+      await runner.run(this.vi, stepName, step, this.configJson);
       this.executedSteps.add(step.id);
     }
     console.log(`Workflow steps execution finished successfully`);

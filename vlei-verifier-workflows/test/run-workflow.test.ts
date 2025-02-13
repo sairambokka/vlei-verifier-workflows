@@ -7,6 +7,8 @@ import {
 import { WorkflowRunner } from "../src/utils/run-workflow";
 import { strict as assert } from "assert";
 import { loadWorkflow } from "../src/utils/test-data"
+import { getRootOfTrust } from "../src/utils/get-root-of-trust";
+import { VleiVerifierAdapter } from "../src/vlei-verifier-adapter";
 
 
 let env: TestEnvironment;
@@ -31,8 +33,12 @@ test.only("workflow", async function run() {
   const configFilePath = path.join(__dirname, dirPath) + configFileName
   const configJson = await getConfig(configFilePath);
   if (workflow && configJson) {
-    const wr = new WorkflowRunner(workflow, configJson);    
+    const wr = new WorkflowRunner(workflow, configJson);
     await wr.prepareClients();
+    // Hardcoded part to add root of trust. Will be removed when the "Add Root Of Trust" workflow step is ready
+    const rootOfTrustData = await getRootOfTrust(configJson);
+    const va = new VleiVerifierAdapter(env.verifierBaseUrl);
+    await va.addRootOfTrust(rootOfTrustData.aid, rootOfTrustData.vlei, rootOfTrustData.oobi)
     const workflowRunResult = await wr.runWorkflow();
     assert.equal(workflowRunResult, true);
   }
