@@ -43,4 +43,4 @@ jobs:
         run: npm run build
 
       - name: Run Workflow
-        run: WORKFLOW=revocation-test-singlesig.yaml CONFIGURATION=configuration-revocation-test.json npx jest ./run-workflow.test.ts --runInBand --detectOpenHandles --forceExit
+        run: WORKFLOW=revocation-test-singlesig.yaml CONFIGURATION=configuration-revocation-test-singlesig.json npx jest ./run-workflow.test.ts --runInBand --detectOpenHandles --forceExit
