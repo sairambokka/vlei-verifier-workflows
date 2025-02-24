@@ -8,6 +8,7 @@ import { RULES, SCHEMAS, witnessIds } from './constants';
 
 export class WorkflowState {
   private static instance: WorkflowState;
+  configJson: any;
   schemas: any = SCHEMAS;
   rules: any = RULES;
   clients: Map<string, SignifyClient> = new Map();
@@ -21,6 +22,7 @@ export class WorkflowState {
     witnessIds.length > 0 ? { toad: witnessIds.length, wits: witnessIds } : {};
 
   private constructor(configJson: any) {
+    this.configJson = configJson;
     this.credentialsInfo = buildCredentials(configJson);
   }
 
@@ -32,4 +34,14 @@ export class WorkflowState {
     }
     return WorkflowState.instance;
   }
+
+  static resetInstance() {
+    if (WorkflowState.instance) {
+      WorkflowState.instance = new WorkflowState(
+        WorkflowState.instance.configJson
+      );
+    }
+  }
+
+  public async preloadState() {}
 }
