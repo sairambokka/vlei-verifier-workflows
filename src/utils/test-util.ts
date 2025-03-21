@@ -3,6 +3,7 @@ import SignifyClient from 'signify-ts';
 
 import { RetryOptions, retry } from './retry.js';
 import { resolveEnvironment } from './resolve-env.js';
+import { TestKeria } from './test-keria.js';
 import { WorkflowState } from '../workflow-state.js';
 import {
   getIdentifierData,
@@ -155,9 +156,6 @@ export async function getOrCreateAID(
   name: string,
   kargs: SignifyClient.CreateIdentiferArgs
 ): Promise<SignifyClient.HabState> {
-  if (!client) {
-    throw new Error("getOrCreateAID: client doesn't exist");
-  }
   try {
     return await client.identifiers().get(name);
   } catch {
@@ -182,18 +180,21 @@ export async function getOrCreateAID(
  * Connect or boot a SignifyClient instance
  */
 export async function getOrCreateClient(
+  testKeria: TestKeria,
   bran: string | undefined = undefined,
   getOnly = false
 ): Promise<SignifyClient.SignifyClient> {
-  const env = resolveEnvironment();
   await SignifyClient.ready();
   bran ??= SignifyClient.randomPasscode();
   bran = bran.padEnd(21, '_');
   const client = new SignifyClient.SignifyClient(
-    env.url,
+    `http://${testKeria.domain}:${testKeria.keriaAdminPort}`,
+
     bran,
+
     SignifyClient.Tier.low,
-    env.bootUrl
+
+    `http://${testKeria.domain}:${testKeria.keriaBootPort}`
   );
   try {
     await client.connect();
@@ -227,13 +228,16 @@ export async function getOrCreateClient(
  * <caption>Launch jest from shell with pre-defined secrets</caption>
  */
 export async function getOrCreateClients(
+  testKeria: TestKeria,
   count: number,
   brans: string[] | undefined = undefined,
   getOnly = false
 ): Promise<SignifyClient.SignifyClient[]> {
   const tasks: Promise<SignifyClient.SignifyClient>[] = [];
   for (let i = 0; i < count; i++) {
-    tasks.push(getOrCreateClient(brans?.at(i) ?? undefined, getOnly));
+    tasks.push(
+      getOrCreateClient(testKeria, brans?.at(i) ?? undefined, getOnly)
+    );
   }
   const clients: SignifyClient.SignifyClient[] = await Promise.all(tasks);
   console.log(`secrets="${clients.map((i) => i.bran).join(',')}"`);
@@ -638,7 +642,7 @@ export async function sendAdmitMessage(
 }
 
 export async function getRootOfTrust(
-  configJson: any,
+  config: any,
   rot_aid: string,
   rot_member_aid?: string
 ): Promise<any> {
@@ -648,7 +652,7 @@ export async function getRootOfTrust(
   const identifierToUse = rot_member_aid || rot_aid;
 
   const identifierData = getIdentifierData(
-    configJson,
+    config,
     identifierToUse
   ) as SinglesigIdentifierData;
 
