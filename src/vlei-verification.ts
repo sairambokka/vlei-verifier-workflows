@@ -66,13 +66,13 @@ export class VleiVerification {
     expected_status_code: number
   ) {
     await this.verifierClient.login(said, credCesr).then((res) => {
-      assert.equal(res.code, expected_status_code); // what is this assertion even for?
+      assert.equal(res.code, expected_status_code);
     });
   }
 
   private async authorization(aidPrefix: string, expected_status_code: number) {
     await this.verifierClient.checkLogin(aidPrefix).then((res) => {
-      assert.equal(res.code, expected_status_code); // what is this assertion even for?
+      assert.equal(res.code, expected_status_code);
     });
   }
 }
