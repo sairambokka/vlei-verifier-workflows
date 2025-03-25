@@ -1,21 +1,22 @@
+import { Workflow } from '../types/workflow.js';
+
+import fs from 'fs';
+import yaml from 'js-yaml';
 import SignifyClient from 'signify-ts';
-import * as fs from 'fs';
-import * as yaml from 'js-yaml';
 
 // Function to load and parse YAML file
-export function loadWorkflow(workflowFilePath: string) {
+export function loadWorkflow(workflowFilePath: string): Workflow {
   try {
     const file = fs.readFileSync(workflowFilePath, 'utf8');
-    return yaml.load(file);
+    return yaml.load(file) as Workflow;
   } catch (e) {
-    console.error('Error reading YAML file:', e);
-    return null;
+    throw new Error(`Error reading YAML file: ${e}`);
   }
 }
 
-export function getConfig(configFilePath: string) {
-  const configJson = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
-  return configJson;
+export function getConfig(configFilePath: string): any {
+  const config = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
+  return config;
 }
 
 export async function getGrantedCredential(
