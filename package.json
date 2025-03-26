@@ -25,6 +25,10 @@
   },
   "exports": {
     ".": {
+      "browser": {
+        "types": "./dist/browser/types/browser.d.ts",
+        "default": "./dist/browser/browser.js"
+      },
       "import": {
         "types": "./dist/esm/types/index.d.ts",
         "default": "./dist/esm/index.js"
@@ -37,6 +41,11 @@
   },
   "module": "./dist/esm/index.js",
   "main": "./dist/cjs/index.js",
+  "browser": {
+    "fs": "./dist/browser/browser-polyfills/fs.js",
+    "path": "./dist/browser/browser-polyfills/path.js",
+    "process": "./dist/browser/browser-polyfills/process.js"
+  },
   "types": "./dist/esm/types/index.d.ts",
   "typesVersions": {
     "<=4.9": {
@@ -56,9 +65,10 @@
   ],
   "scripts": {
     "clean": "del-cli ./dist",
-    "build": "npm run clean && npm run build:esm && npm run build:cjs",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs && npm run build:browser",
     "build:esm": "tsc -p ./build/configs/tsconfig.esm.json && npx echo-cli '{\"type\": \"module\"}' > dist/esm/package.json",
     "build:cjs": "tsc -p ./build/configs/tsconfig.cjs.json && npx echo-cli '{\"type\": \"commonjs\"}' > dist/cjs/package.json",
+    "build:browser": "tsc -p ./build/configs/tsconfig.browser.json && npx echo-cli '{\"type\": \"module\"}' > dist/browser/package.json",
     "workflow:singlesig-single-user-light": "npm run docker:up && jest test/run-workflow.test.ts && npm run docker:down",
     "workflow:singlesig-single-user": "npm run docker:up && cross-env WORKFLOW=singlesig-single-user.yaml CONFIGURATION=configuration-singlesig-single-user.json jest test/run-workflow.test.ts && npm run docker:down",
     "workflow:singlesig-multi-user-vlei-verifier-router-test": "npm run docker:up && cross-env WORKFLOW=singlesig-multi-user-vlei-verifier-router-test.yaml CONFIGURATION=configuration-singlesig-multi-user-vlei-verifier-router-test.json jest test/run-workflow.test.ts && npm run docker:down",
