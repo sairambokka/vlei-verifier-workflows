@@ -1,5 +1,5 @@
 {
-  "name": "@gleif-it/vlei-verifier-workflows",
+  "name": "@sairambokka/vlei-verifier-workflows",
   "version": "0.0.7",
   "description": "Workflows for vLEI users and vLEI credentials for the vLEI-verifier service",
   "license": "Apache-2.0",
@@ -7,7 +7,7 @@
   "access": "public",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GLEIF-IT/vlei-verifier-workflows.git"
+    "url": "git+https://github.com/sairambokka/vlei-verifier-workflows.git"
   },
   "keywords": [
     "GLEIF",
@@ -17,9 +17,9 @@
     "vLEI-verifier-workflows"
   ],
   "bugs": {
-    "url": "https://github.com/GLEIF-IT/vlei-verifier-workflows/issues"
+    "url": "https://github.com/sairambokka/vlei-verifier-workflows/issues"
   },
-  "homepage": "https://github.com/GLEIF-IT/vlei-verifier-workflows#readme",
+  "homepage": "https://github.com/sairambokka/vlei-verifier-workflows#readme",
   "engines": {
     "node": ">=18.0.0"
   },
