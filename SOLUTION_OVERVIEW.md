@@ -9,20 +9,24 @@ The original `vlei-verifier-workflows` library had dependencies on Node.js-speci
 We've implemented a comprehensive solution that allows the library to run seamlessly in both Node.js and browser environments. Here's what we did:
 
 1. **Created browser-compatible polyfills** for Node.js built-in modules:
+
    - `fs`: Using IndexedDB for storage
    - `path`: Pure JavaScript implementation
    - `process`: Using localStorage for environment variables
 
 2. **Added a separate browser entry point** (`src/browser.ts`) that:
+
    - Re-exports all the core functionality
    - Adds browser-specific utilities and polyfills
    - Provides an initialization function
 
 3. **Used package.json's browser field** to automatically:
+
    - Replace Node.js modules with browser-compatible versions
    - Use the browser-specific entry point
 
 4. **Implemented a virtual file system** for browser environments:
+
    - Map virtual paths to resource URLs
    - Preload and cache workflow definitions
    - Support both synchronous and asynchronous APIs
@@ -32,6 +36,7 @@ We've implemented a comprehensive solution that allows the library to run seamle
 ## Key Files Added/Modified
 
 - **Browser Polyfills**:
+
   - `src/browser-polyfills/fs.ts`: IndexedDB-based file system implementation
   - `src/browser-polyfills/path.ts`: Browser-compatible path module
   - `src/browser-polyfills/process.ts`: Process environment and events simulation
@@ -40,10 +45,12 @@ We've implemented a comprehensive solution that allows the library to run seamle
   - `src/browser-polyfills/index.ts`: Entry point for browser polyfills
 
 - **Configuration**:
+
   - `package.json`: Added browser field and browser build configuration
   - `build/configs/tsconfig.browser.json`: TypeScript configuration for browser build
 
 - **Browser Entry Point**:
+
   - `src/browser.ts`: Browser-specific entry point with initializer function
 
 - **Documentation**:
@@ -66,10 +73,10 @@ When the library is imported in a browser environment, the bundler (Webpack, Rol
 Users can import and use the library like this:
 
 ```javascript
-import { 
-  WorkflowRunner, 
+import {
+  WorkflowRunner,
   initBrowserEnvironment,
-  preloadWorkflow 
+  preloadWorkflow,
 } from '@gleif-it/vlei-verifier-workflows';
 
 // Initialize the browser environment
@@ -80,7 +87,9 @@ preloadWorkflow('/workflows/my-workflow.yaml', workflowYamlContent);
 
 // Use the library as normal
 const workflow = await loadWorkflow('/workflows/my-workflow.yaml');
-const config = { /* ... */ };
+const config = {
+  /* ... */
+};
 const runner = new WorkflowRunner(workflow, config);
 await runner.runWorkflow();
 ```
@@ -97,4 +106,4 @@ await runner.runWorkflow();
 
 1. **Synchronous operations** are simulated and not truly synchronous
 2. **Docker-based features** are not available in browsers
-3. **File system operations** are limited to pre-loaded content and IndexedDB storage 
+3. **File system operations** are limited to pre-loaded content and IndexedDB storage

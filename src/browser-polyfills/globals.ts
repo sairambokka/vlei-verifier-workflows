@@ -13,14 +13,18 @@ export const virtualFileSystem = {
   '/src': '/src',
   '/src/workflows': '/src/workflows',
   '/src/config': '/src/config',
-  
+
   // Workflow files
-  '/src/workflows/singlesig-single-user-light.yaml': '/src/workflows/singlesig-single-user-light.yaml',
-  '/src/workflows/singlesig-single-user.yaml': '/src/workflows/singlesig-single-user.yaml',
-  
+  '/src/workflows/singlesig-single-user-light.yaml':
+    '/src/workflows/singlesig-single-user-light.yaml',
+  '/src/workflows/singlesig-single-user.yaml':
+    '/src/workflows/singlesig-single-user.yaml',
+
   // Configuration files
-  '/src/config/configuration-singlesig-single-user-light.json': '/src/config/configuration-singlesig-single-user-light.json',
-  '/src/config/configuration-singlesig-single-user.json': '/src/config/configuration-singlesig-single-user.json',
+  '/src/config/configuration-singlesig-single-user-light.json':
+    '/src/config/configuration-singlesig-single-user-light.json',
+  '/src/config/configuration-singlesig-single-user.json':
+    '/src/config/configuration-singlesig-single-user.json',
 };
 
 /**
@@ -29,12 +33,16 @@ export const virtualFileSystem = {
  */
 export const resourceUrls: Record<string, string> = {
   // Workflow files (these URLs would point to the bundled/hosted versions of these files)
-  '/src/workflows/singlesig-single-user-light.yaml': '/resources/workflows/singlesig-single-user-light.yaml',
-  '/src/workflows/singlesig-single-user.yaml': '/resources/workflows/singlesig-single-user.yaml',
-  
+  '/src/workflows/singlesig-single-user-light.yaml':
+    '/resources/workflows/singlesig-single-user-light.yaml',
+  '/src/workflows/singlesig-single-user.yaml':
+    '/resources/workflows/singlesig-single-user.yaml',
+
   // Configuration files
-  '/src/config/configuration-singlesig-single-user-light.json': '/resources/config/configuration-singlesig-single-user-light.json',
-  '/src/config/configuration-singlesig-single-user.json': '/resources/config/configuration-singlesig-single-user.json',
+  '/src/config/configuration-singlesig-single-user-light.json':
+    '/resources/config/configuration-singlesig-single-user-light.json',
+  '/src/config/configuration-singlesig-single-user.json':
+    '/resources/config/configuration-singlesig-single-user.json',
 };
 
 // Virtual module paths - maps from virtual filesystem paths to apparent Node.js module paths
@@ -52,7 +60,7 @@ export const modulePaths: Record<string, string> = {
 export function getDirname(modulePath: string): string {
   // Default dirname for when we can't determine a better value
   const defaultDirname = '/src';
-  
+
   // Look through module paths to find a match
   for (const [virtualPath, moduleName] of Object.entries(modulePaths)) {
     if (modulePath.includes(moduleName)) {
@@ -63,7 +71,7 @@ export function getDirname(modulePath: string): string {
       }
     }
   }
-  
+
   return defaultDirname;
 }
 
@@ -75,14 +83,14 @@ export function getDirname(modulePath: string): string {
 export function getFilename(modulePath: string): string {
   // Default filename
   const defaultFilename = '/src/index.js';
-  
+
   // Look through module paths to find a match
   for (const [virtualPath, moduleName] of Object.entries(modulePaths)) {
     if (modulePath.includes(moduleName)) {
       return virtualPath;
     }
   }
-  
+
   return defaultFilename;
 }
 
@@ -93,10 +101,14 @@ export function getFilename(modulePath: string): string {
  * @param resourceUrl The URL to fetch the resource from
  * @param modulePath Optional module path for Node.js module name mapping
  */
-export function addVirtualFile(virtualPath: string, resourceUrl: string, modulePath?: string): void {
+export function addVirtualFile(
+  virtualPath: string,
+  resourceUrl: string,
+  modulePath?: string
+): void {
   virtualFileSystem[virtualPath] = virtualPath;
   resourceUrls[virtualPath] = resourceUrl;
-  
+
   if (modulePath) {
     modulePaths[virtualPath] = modulePath;
   }
@@ -112,12 +124,14 @@ export async function loadResource(path: string): Promise<string> {
   if (!url) {
     throw new Error(`Resource not found in virtual filesystem: ${path}`);
   }
-  
+
   const response = await fetch(url);
   if (!response.ok) {
-    throw new Error(`Failed to load resource ${path} from ${url}: ${response.statusText}`);
+    throw new Error(
+      `Failed to load resource ${path} from ${url}: ${response.statusText}`
+    );
   }
-  
+
   return response.text();
 }
 
@@ -126,4 +140,4 @@ export async function loadResource(path: string): Promise<string> {
  */
 export function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
-} 
+}

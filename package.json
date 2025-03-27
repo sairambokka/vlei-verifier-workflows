@@ -23,19 +23,19 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "main": "./dist/cjs/index.js",
+  "main": "./dist/esm/index.js",
   "module": "./dist/esm/index.js",
   "browser": "./dist/browser/browser.js",
   "types": "./dist/esm/types/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/esm/types/index.d.ts",
       "browser": "./dist/browser/browser.js",
-      "node": {
-        "import": "./dist/esm/index.js",
-        "require": "./dist/cjs/index.js"
-      },
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
       "default": "./dist/esm/index.js"
-    }
+    },
+    "./dist/*": "./dist/*"
   },
   "files": [
     "dist/**/*",

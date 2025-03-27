@@ -27,7 +27,7 @@ const preloadedConfigs: Record<string, string> = {};
 export async function loadWorkflow(path: string): Promise<Workflow | null> {
   try {
     let workflowContent: string;
-    
+
     // Check if we have a preloaded workflow
     if (preloadedWorkflows[path]) {
       workflowContent = preloadedWorkflows[path];
@@ -35,7 +35,7 @@ export async function loadWorkflow(path: string): Promise<Workflow | null> {
       // Try to load from the resource URLs
       workflowContent = await loadResource(path);
     }
-    
+
     return yaml.load(workflowContent) as Workflow;
   } catch (error) {
     console.error(`Failed to load workflow from ${path}: ${error}`);
@@ -51,7 +51,7 @@ export async function loadWorkflow(path: string): Promise<Workflow | null> {
 export async function loadConfig(path: string): Promise<any | null> {
   try {
     let configContent: string;
-    
+
     // Check if we have a preloaded config
     if (preloadedConfigs[path]) {
       configContent = preloadedConfigs[path];
@@ -59,7 +59,7 @@ export async function loadConfig(path: string): Promise<any | null> {
       // Try to load from the resource URLs
       configContent = await loadResource(path);
     }
-    
+
     return JSON.parse(configContent);
   } catch (error) {
     console.error(`Failed to load config from ${path}: ${error}`);
@@ -109,22 +109,24 @@ export function registerConfigUrl(path: string, url: string): void {
  */
 export function getAvailableWorkflows(): string[] {
   const workflowPaths: string[] = [];
-  
+
   // Add paths from preloaded workflows
   for (const path of Object.keys(preloadedWorkflows)) {
     if (path.endsWith('.yaml') || path.endsWith('.yml')) {
       workflowPaths.push(path);
     }
   }
-  
+
   // Add paths from resource URLs
   for (const path of Object.keys(resourceUrls)) {
-    if ((path.endsWith('.yaml') || path.endsWith('.yml')) && 
-        !workflowPaths.includes(path)) {
+    if (
+      (path.endsWith('.yaml') || path.endsWith('.yml')) &&
+      !workflowPaths.includes(path)
+    ) {
       workflowPaths.push(path);
     }
   }
-  
+
   return workflowPaths;
 }
 
@@ -135,5 +137,5 @@ export default {
   preloadConfig,
   registerWorkflowUrl,
   registerConfigUrl,
-  getAvailableWorkflows
-}; 
+  getAvailableWorkflows,
+};

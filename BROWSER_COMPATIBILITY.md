@@ -17,26 +17,38 @@ npm install @gleif-it/vlei-verifier-workflows
 When used in a browser environment, the library will automatically use browser-compatible versions of Node.js modules. Here's how to use it:
 
 ```javascript
-import { WorkflowRunner, initBrowserEnvironment } from '@gleif-it/vlei-verifier-workflows';
+import {
+  WorkflowRunner,
+  initBrowserEnvironment,
+} from '@gleif-it/vlei-verifier-workflows';
 
 // Initialize the browser environment
 await initBrowserEnvironment();
 
 // Load a workflow and config
-const workflow = await fetch('/resources/workflows/singlesig-single-user-light.yaml')
-  .then(response => response.text())
-  .then(content => {
+const workflow = await fetch(
+  '/resources/workflows/singlesig-single-user-light.yaml'
+)
+  .then((response) => response.text())
+  .then((content) => {
     // Preload the workflow for later use
     preloadWorkflow('/src/workflows/singlesig-single-user-light.yaml', content);
     return loadWorkflow('/src/workflows/singlesig-single-user-light.yaml');
   });
 
-const config = await fetch('/resources/config/configuration-singlesig-single-user-light.json')
-  .then(response => response.text())
-  .then(content => {
+const config = await fetch(
+  '/resources/config/configuration-singlesig-single-user-light.json'
+)
+  .then((response) => response.text())
+  .then((content) => {
     // Preload the config for later use
-    preloadConfig('/src/config/configuration-singlesig-single-user-light.json', content);
-    return loadConfig('/src/config/configuration-singlesig-single-user-light.json');
+    preloadConfig(
+      '/src/config/configuration-singlesig-single-user-light.json',
+      content
+    );
+    return loadConfig(
+      '/src/config/configuration-singlesig-single-user-light.json'
+    );
   });
 
 // Create a workflow runner
@@ -53,6 +65,7 @@ The library includes the following browser-compatible replacements for Node.js m
 ### fs Module
 
 The `fs` module is replaced with an IndexedDB-based implementation that:
+
 - Stores files and directories in the browser's IndexedDB
 - Implements key file operations like `readFile`, `writeFile`, `mkdir`, etc.
 - Provides both callback and Promise-based APIs
@@ -60,12 +73,14 @@ The `fs` module is replaced with an IndexedDB-based implementation that:
 ### path Module
 
 The `path` module is replaced with a pure JavaScript implementation that:
+
 - Works just like Node's path module with `join`, `resolve`, `dirname`, etc.
 - Maintains compatibility with path manipulation in workflows
 
 ### process Module
 
 The `process` module is simulated with:
+
 - Environment variables stored in localStorage
 - Command-line arguments available through URL parameters
 - Process events that use browser events as appropriate
@@ -73,6 +88,7 @@ The `process` module is simulated with:
 ## Virtual File System
 
 The browser version includes a virtual file system that:
+
 - Maps virtual paths to resource URLs
 - Allows preloading workflows and configurations
 - Simulates directory and file structures
@@ -82,11 +98,11 @@ The browser version includes a virtual file system that:
 Browser-specific workflow loading features:
 
 ```javascript
-import { 
+import {
   preloadWorkflow,
   preloadConfig,
   registerWorkflowUrl,
-  registerConfigUrl
+  registerConfigUrl,
 } from '@gleif-it/vlei-verifier-workflows';
 
 // Register a URL for a workflow
@@ -116,11 +132,11 @@ When using the library in a browser environment, be aware of these limitations:
 For advanced configurations, you can modify:
 
 ```javascript
-import { 
-  process, 
-  fs, 
-  addVirtualFile, 
-  virtualFileSystem 
+import {
+  process,
+  fs,
+  addVirtualFile,
+  virtualFileSystem,
 } from '@gleif-it/vlei-verifier-workflows';
 
 // Set environment variables
@@ -149,17 +165,18 @@ module.exports = {
   // ...
   resolve: {
     fallback: {
-      "fs": false,  // Let the package's browser field handle this
-      "path": false,
-      "process": false
-    }
-  }
+      fs: false, // Let the package's browser field handle this
+      path: false,
+      process: false,
+    },
+  },
 };
 ```
 
 ## Browser Support
 
 The browser polyfills require:
+
 - IndexedDB support
 - ES2020 features (or polyfills)
-- Fetch API 
+- Fetch API
