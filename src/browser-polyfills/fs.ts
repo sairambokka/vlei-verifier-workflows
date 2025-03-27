@@ -1,6 +1,6 @@
 // Define a simple Buffer type for browsers that matches the basic needs
 class BrowserBuffer {
-  private data: Uint8Array;
+  public data: Uint8Array;
 
   constructor(input: string | Uint8Array | number[] | ArrayBuffer) {
     if (typeof input === 'string') {
@@ -285,7 +285,7 @@ async function writeFile(
     let content: string | Uint8Array;
     if (data instanceof Buffer) {
       // For serialization, we need a plain array
-      content = Array.from((data as any).data);
+      content = new Uint8Array(Array.from((data as any).data));
     } else {
       content = data;
     }

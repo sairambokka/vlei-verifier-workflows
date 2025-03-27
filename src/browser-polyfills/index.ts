@@ -3,10 +3,10 @@
  * This module exports all the browser-compatible replacements for Node.js modules
  */
 
-import fs from './fs';
-import path from './path';
-import process from './process';
-import { getDirname, getFilename, isBrowser, loadResource, virtualFileSystem, resourceUrls, addVirtualFile } from './globals';
+import fs from './fs.js';
+import path from './path.js';
+import process from './process.js';
+import { getDirname, getFilename, isBrowser, loadResource, virtualFileSystem, resourceUrls, addVirtualFile } from './globals.js';
 
 // Export all browser polyfills
 export {

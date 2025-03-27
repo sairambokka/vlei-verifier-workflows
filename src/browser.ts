@@ -8,7 +8,15 @@ export * from './index.js';
 
 // Export browser polyfills
 export * from './browser-polyfills/index.js';
-export * from './browser-polyfills/workflow-loader.js';
+
+// Export named functions from workflow-loader to avoid conflict
+export { 
+  preloadWorkflow, 
+  preloadConfig, 
+  registerWorkflowUrl,
+  registerConfigUrl,
+  getAvailableWorkflows
+} from './browser-polyfills/workflow-loader.js';
 
 // Initialize function for browser environment
 export async function initBrowserEnvironment(): Promise<void> {

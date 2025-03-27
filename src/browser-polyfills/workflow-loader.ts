@@ -5,7 +5,7 @@
 
 import { Workflow } from '../types/workflow.js';
 import yaml from 'js-yaml';
-import { loadResource, resourceUrls } from './globals';
+import { loadResource, resourceUrls } from './globals.js';
 
 /**
  * Map of preloaded workflow contents
