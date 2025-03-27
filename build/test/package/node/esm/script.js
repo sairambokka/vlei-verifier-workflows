@@ -1,10 +1,10 @@
-import * as workflow from '@gleif-it/vlei-verifier-workflows';
+import * as workflow from '@sairambokka/vlei-verifier-workflows';
 import {
   WorkflowRunner,
   StepRunner,
   getConfig,
   loadWorkflow,
-} from '@gleif-it/vlei-verifier-workflows';
+} from '@sairambokka/vlei-verifier-workflows';
 
 console.log('\n\x1b[34m**************');
 console.log('* EcmaScript *');

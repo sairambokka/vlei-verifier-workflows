@@ -11,6 +11,6 @@
   "license": "",
   "description": "",
   "dependencies": {
-    "@gleif-it/vlei-verifier-workflows": "~0.0.1"
+    "@sairambokka/vlei-verifier-workflows": "~0.0.1"
   }
 }
